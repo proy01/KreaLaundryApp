@@ -1,8 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:krea_laundry/main_routes.dart';
+import 'package:krea_laundry/core/main_routes.dart';
+import 'firebase_options.dart';
 import 'ui/theme_data.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -13,6 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Krea Laundry App',
       theme: laundryTheme,
+      initialRoute: FirebaseAuth.instance.currentUser == null ? '/signIn' : '/home',
       routes: mainRoutes,
     );
   }
