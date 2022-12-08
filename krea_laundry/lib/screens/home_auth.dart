@@ -1,7 +1,25 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../core/classes/user_login.dart';
+
+Future<UserCredential> signInWithGoogleWeb() async {
+  // Create a new provider
+  GoogleAuthProvider googleProvider = GoogleAuthProvider();
+
+  googleProvider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+  googleProvider.setCustomParameters({
+    'login_hint': 'user@example.com'
+  });
+
+  // Once signed in, return the UserCredential
+  return await FirebaseAuth.instance.signInWithPopup(googleProvider);
+
+  // Or use signInWithRedirect
+  // return await FirebaseAuth.instance.signInWithRedirect(googleProvider);
+}
 Future<UserCredential> signInWithGoogle() async {
   // Trigger the authentication flow
   final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -28,6 +46,9 @@ class MainAuth extends StatefulWidget {
 }
 
 class _MainAuthState extends State<MainAuth> {
+
+  bool web = kIsWeb;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,8 +63,10 @@ class _MainAuthState extends State<MainAuth> {
               width: 120,
               child: ElevatedButton(
                   onPressed: () async {
-                    await signInWithGoogle();
+                    web ? await signInWithGoogleWeb() : await signInWithGoogle();
                     if (mounted) {
+                      UserLogin user = UserLogin.login();
+                      user.isNewLogin();
                       Navigator.pushReplacementNamed(context, '/home');
                     }
                   },

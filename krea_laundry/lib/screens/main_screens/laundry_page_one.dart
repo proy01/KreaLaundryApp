@@ -13,6 +13,7 @@ class LaundryPageOne extends StatelessWidget {
             onPressed: () => Navigator.pushNamed(context, '/home/give'),
             child: const Text("Give Laundry"),
           ),
+          SizedBox(height: 10,),
           ElevatedButton(
             onPressed: () => Navigator.pushNamed(context, '/home/get'),
             child: const Text("Receive Laundry"),
