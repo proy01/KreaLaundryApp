@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "1041697943348",
+    "firebase_url": "https://krea-laundry-app-default-rtdb.firebaseio.com",
     "project_id": "krea-laundry-app",
     "storage_bucket": "krea-laundry-app.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "1041697943348-5bkjao45hjfb0925tur84qvel3j7s4no.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.krea_laundry",
+            "certificate_hash": "e49781845ba2a8217df9a1a7d69dbad64c071b10"
+          }
+        },
         {
           "client_id": "1041697943348-i7o8c5dvj1sddsgjfe2igic4sfm6d9mt.apps.googleusercontent.com",
           "client_type": 3
@@ -29,6 +38,13 @@
             {
               "client_id": "1041697943348-i7o8c5dvj1sddsgjfe2igic4sfm6d9mt.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1041697943348-q92mn6u3uho8do77lgfqj0jpd29ljamk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.kreaLaundry"
+              }
             }
           ]
         }

@@ -49,6 +49,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '1041697943348',
     projectId: 'krea-laundry-app',
     authDomain: 'krea-laundry-app.firebaseapp.com',
+    databaseURL: 'https://krea-laundry-app-default-rtdb.firebaseio.com',
     storageBucket: 'krea-laundry-app.appspot.com',
   );
 
@@ -57,6 +58,7 @@ class DefaultFirebaseOptions {
     appId: '1:1041697943348:android:1de24584fcc31896163f61',
     messagingSenderId: '1041697943348',
     projectId: 'krea-laundry-app',
+    databaseURL: 'https://krea-laundry-app-default-rtdb.firebaseio.com',
     storageBucket: 'krea-laundry-app.appspot.com',
   );
 
@@ -65,7 +67,9 @@ class DefaultFirebaseOptions {
     appId: '1:1041697943348:ios:cecc11103e8b7114163f61',
     messagingSenderId: '1041697943348',
     projectId: 'krea-laundry-app',
+    databaseURL: 'https://krea-laundry-app-default-rtdb.firebaseio.com',
     storageBucket: 'krea-laundry-app.appspot.com',
+    androidClientId: '1041697943348-5bkjao45hjfb0925tur84qvel3j7s4no.apps.googleusercontent.com',
     iosClientId: '1041697943348-q92mn6u3uho8do77lgfqj0jpd29ljamk.apps.googleusercontent.com',
     iosBundleId: 'com.example.kreaLaundry',
   );
@@ -75,7 +79,9 @@ class DefaultFirebaseOptions {
     appId: '1:1041697943348:ios:cecc11103e8b7114163f61',
     messagingSenderId: '1041697943348',
     projectId: 'krea-laundry-app',
+    databaseURL: 'https://krea-laundry-app-default-rtdb.firebaseio.com',
     storageBucket: 'krea-laundry-app.appspot.com',
+    androidClientId: '1041697943348-5bkjao45hjfb0925tur84qvel3j7s4no.apps.googleusercontent.com',
     iosClientId: '1041697943348-q92mn6u3uho8do77lgfqj0jpd29ljamk.apps.googleusercontent.com',
     iosBundleId: 'com.example.kreaLaundry',
   );
