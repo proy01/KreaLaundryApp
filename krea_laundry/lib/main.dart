@@ -13,9 +13,6 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
-// This is a comment that people should be reading and not code.
-
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
