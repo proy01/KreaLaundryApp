@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../core/classes/krea_user.dart';
+
 class GiveLaundry extends StatefulWidget {
   const GiveLaundry({Key? key}) : super(key: key);
 
@@ -15,6 +17,8 @@ class _GiveLaundryState extends State<GiveLaundry> {
   List<TextInputFormatter> numberFormat = <TextInputFormatter>[
     FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
   ];
+
+  final KreaUser user = KreaUser.login();
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +61,40 @@ class _GiveLaundryState extends State<GiveLaundry> {
                       child: TextFormField(
                         controller: clothes,
                         keyboardType: TextInputType.number,
-                        // TODO validator: ,
+                        validator: (val) {
+                          int x = 0;
+                          // ERROR CODES:
+                          // 0 is all ok,
+                          // 1 is empty, 2 is greater than 20,
+                          // 3 is less than 0, 4 is letter found
+                          if (val == null || val.isEmpty){
+                            x = 1;
+                          } else {
+                            try {
+                              if (x != 1) {
+                                int number = int.parse(val);
+                                if (number > 20) {
+                                  x = 2;
+                                } else if (number < 0) {
+                                  x = 3;
+                                }
+                              }
+                            } catch (e) {
+                              x = 4;
+                            }
+                          }
+                          if (x == 1) {
+                            return 'Value cannot be empty, put 0 instead';
+                          } else if (x == 2) {
+                            return 'For above 20 clothes, please approach laundry';
+                          } else if (x == 3) {
+                            return 'Wrong Input';
+                          } else if (x == 4) {
+                            return 'Put only numbers please';
+                          }
+                          // TODO: Make this into a switch case
+                          return null;
+                        },
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                         ),
@@ -88,7 +125,14 @@ class _GiveLaundryState extends State<GiveLaundry> {
                       child: TextFormField(
                         controller: undergarments,
                         keyboardType: TextInputType.number,
-                        // TODO validator: ,
+                        validator: (val) {
+                          if (val == null || val.isEmpty) {
+                            return 'Value cannot be empty, put 0 instead';
+                          } else if (int.parse(val) < 0) {
+                            return 'Wrong Input';
+                          }
+                          return null;
+                        },
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                         ),
@@ -103,7 +147,17 @@ class _GiveLaundryState extends State<GiveLaundry> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  ElevatedButton(onPressed: () {}, child: const Text("Submit")),
+                  ElevatedButton(
+                      onPressed: () async {
+                       if (_formKey.currentState!.validate()) {
+                         await user.giveLaundry(
+                             clothes.text, undergarments.text);
+                         if (mounted) {
+                           Navigator.pop(context);
+                         }
+                       }
+                      },
+                      child: const Text("Submit")),
                 ],
               )
             ],

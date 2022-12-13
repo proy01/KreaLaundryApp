@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:krea_laundry/core/classes/krea_user.dart';
 import 'package:krea_laundry/screens/main_screens/laundry_page_one.dart';
 import 'package:krea_laundry/screens/main_screens/laundry_page_two.dart';
 
@@ -15,10 +16,11 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
   int _bottomIndex = 0;
+  static final KreaUser mainUser = KreaUser.login();
 
   List homeScreens = <Widget>[
-    LaundryPageOne(key: UniqueKey(),),
-    LaundryPageTwo(key: UniqueKey(),),
+    LaundryPageOne(key: UniqueKey()),
+    LaundryPageTwo(key: UniqueKey()),
   ];
 
   void changePage(int index){

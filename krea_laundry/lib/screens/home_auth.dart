@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import '../core/classes/user_login.dart';
+import '../core/classes/krea_user.dart';
 
 Future<UserCredential> signInWithGoogleWeb() async {
   // Create a new provider
@@ -65,7 +65,7 @@ class _MainAuthState extends State<MainAuth> {
                   onPressed: () async {
                     web ? await signInWithGoogleWeb() : await signInWithGoogle();
                     if (mounted) {
-                      UserLogin user = UserLogin.login();
+                      KreaUser user = KreaUser.login();
                       user.isNewLogin();
                       Navigator.pushReplacementNamed(context, '/home');
                     }
@@ -84,5 +84,3 @@ class _MainAuthState extends State<MainAuth> {
     );
   }
 }
-
-// This is another comment that I do not want on git for now
