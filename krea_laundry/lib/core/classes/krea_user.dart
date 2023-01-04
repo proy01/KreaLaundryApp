@@ -2,53 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
-class LaundryCard extends StatelessWidget {
-  LaundryCard({
-    Key? key,
-    required this.clothes,
-    required this.undergarments,
-    required this.givenDate,
-    required this.received,
-  }) : super(key: key);
-
-  String? clothes;
-  String? undergarments;
-  String givenDate;
-  bool received;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          ListTile(
-            leading: const Icon(Icons.local_laundry_service),
-            title: Text('Laundry given on $givenDate'),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Divider(),
-                const SizedBox(height:10),
-                Text('Clothes: $clothes'),
-                Text('Undergarments: $undergarments')
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: const [
-                ElevatedButton(onPressed: null, child: Text('Received')),
-              ],
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}
+import '../widgets/laundry_card.dart';
 
 class KreaUser {
   final DatabaseReference usersDb =
@@ -99,17 +53,20 @@ class KreaUser {
   Future<List<LaundryCard>> getLaundryDetails() async {
     final DataSnapshot snapshot = await laundryDb.child(_user.uid).get();
     if (!snapshot.exists) {
+      print("!snapshot.exists");
       return [];
     } else {
-      Map<String, dynamic> laundryData = snapshot.value as Map<String, dynamic>;
+      print(snapshot.value);
+      Map laundryData = snapshot.value as Map;
       List<LaundryCard> laundryCards = [];
       for (String e in laundryData.keys) {
         try {
           laundryCards.add(LaundryCard(
-            clothes: laundryData[e]['Clothes'],
-            undergarments: laundryData[e]['Undergarments'],
-            givenDate: laundryData[e]['Given'],
-            received: laundryData[e]['Received'],
+            clothes: laundryData[e]!['Clothes'],
+            undergarments: laundryData[e]!['Undergarments'],
+            givenDate: laundryData[e]!['Given'],
+            received: laundryData[e]!['Received'],
+            id: e,
           ));
         } catch (e) {
           debugPrint(e.toString());
@@ -117,6 +74,10 @@ class KreaUser {
       }
       return laundryCards;
     }
+  }
+
+  Future<void> receiveLaundry(String id) async {
+    laundryDb.child('${_user.uid}/$id/').update({'Received': true});
   }
 
   String get name => _user.displayName!;

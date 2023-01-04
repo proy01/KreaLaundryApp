@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import '../core/classes/krea_user.dart';
+import '../../core/classes/krea_user.dart';
 
 Future<UserCredential> signInWithGoogleWeb() async {
   // Create a new provider
@@ -70,12 +70,9 @@ class _MainAuthState extends State<MainAuth> {
                       Navigator.pushReplacementNamed(context, '/home');
                     }
                   },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [Icon(Icons.login), Text("Login")],
-                    ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [Icon(Icons.login), Text("Login")],
                   )),
             )
           ],
