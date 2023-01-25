@@ -113,11 +113,37 @@ class _GiveLaundryState extends State<GiveLaundry> {
                   controller: undergarments,
                   keyboardType: TextInputType.number,
                   validator: (val) {
-                    if (val == null || val.isEmpty) {
-                      return 'Value cannot be empty, put 0 instead';
-                    } else if (int.parse(val) < 0) {
-                      return 'Wrong Input';
+                    int x = 0;
+                    // ERROR CODES:
+                    // 0 is all ok,
+                    // 1 is empty, 2 is greater than 20,
+                    // 3 is less than 0, 4 is letter found
+                    if (val == null || val.isEmpty){
+                      x = 1;
+                    } else {
+                      try {
+                        if (x != 1) {
+                          int number = int.parse(val);
+                          if (number > 20) {
+                            x = 2;
+                          } else if (number < 0) {
+                            x = 3;
+                          }
+                        }
+                      } catch (e) {
+                        x = 4;
+                      }
                     }
+                    if (x == 1) {
+                      return 'Value cannot be empty, put 0 instead';
+                    } else if (x == 2) {
+                      return 'For above 20 clothes, please approach laundry';
+                    } else if (x == 3) {
+                      return "Value Can't be negative";
+                    } else if (x == 4) {
+                      return 'Put only numbers please';
+                    }
+                    // TODO: Make this into a switch case
                     return null;
                   },
                   decoration: const InputDecoration(
