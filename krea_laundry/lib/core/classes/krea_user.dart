@@ -80,6 +80,39 @@ class KreaUser {
     laundryDb.child('${_user.uid}/$id/').update({'Received': true});
   }
 
+  bool _isKreaEmail() {
+    RegExp regExp1 = RegExp(r'(?<batch>[0-9][0-9])@krea.ac.in');
+    // RegExpMatch? regExp3 = regExp1.firstMatch(email);
+    // String? x = regExp3?.namedGroup('batch');
+    return regExp1.hasMatch(_user.email!);
+  }
+
+  bool _isSIAS() {
+    RegExp regExp2 = RegExp(r'(\b[a-z]+)_([a-z]+).sias[0-9][0-9]@krea.ac.in');
+    return regExp2.hasMatch(_user.email!);
+  }
+
+  bool _isGSB() {
+    RegExp regExp3 = RegExp(r'(\b[a-z]+)_([a-z]+).mba[0-9][0-9]@krea.ac.in');
+    return regExp3.hasMatch(_user.email!);
+  }
+
+  bool isValidEmail(){
+    if (_isKreaEmail()){
+      if(_isSIAS()){
+        return true;
+      }else if(_isGSB()){
+        return true;
+      }
+      else{
+        return false;
+      }
+    }
+    else{
+      return false;
+    }
+  }
+
   String get name => _user.displayName!;
 
   String get email => _user.email!;
