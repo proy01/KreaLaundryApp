@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:krea_laundry/core/notification_services.dart';
 
 import '../widgets/laundry_card.dart';
 
@@ -39,24 +40,35 @@ class KreaUser {
   }
 
   /// This function creates a new laundry object and sets it in the database.
-  Future<void> giveLaundry(String clothes, String undergarments) async {
+  Future<void> giveLaundry(String clothes, String undergarments, String totalClothes) async {
+    NotificationServices().scheduleNotificationDemo(); // TODO: Change this non-demo when in proper use-case.
     DatabaseReference newLaundry = laundryDb.child('${_user.uid}/').push();
-    newLaundry.set({
+    await newLaundry.set({
       'Clothes': clothes,
       'Undergarments': undergarments,
       'Given': DateTime.now().toString(),
       'Received': false,
     });
+    await laundryDb.child('${_user.uid}/clothes_given/${DateTime.now().year}/').update({
+      DateTime.now().month.toString(): totalClothes,
+    });
+  }
+
+  Future<int> checkClothes() async{
+    final DataSnapshot currentValue = await laundryDb.child('${_user.uid}/clothes_given/${DateTime.now().year}/${DateTime.now().month}/').get();
+    if (!currentValue.exists){
+      return 0;
+    } else {
+      return int.parse(currentValue.value as String);
+    }
   }
 
   /// Builds a list of LaundryCard widgets from existing laundry data.
   Future<List<LaundryCard>> getLaundryDetails() async {
     final DataSnapshot snapshot = await laundryDb.child(_user.uid).get();
     if (!snapshot.exists) {
-      print("!snapshot.exists");
       return [];
     } else {
-      print(snapshot.value);
       Map laundryData = snapshot.value as Map;
       List<LaundryCard> laundryCards = [];
       for (String e in laundryData.keys) {

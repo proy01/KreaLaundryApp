@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:krea_laundry/core/notification_services.dart';
 import 'package:krea_laundry/screens/main_screens/laundry_page_one.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -12,6 +13,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  @override
+  void initState() {
+    NotificationServices().initializeNotification();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,19 +30,30 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            ElevatedButton(onPressed: () async {
-              await FirebaseAuth.instance.signOut();
-              if (mounted){
-                Navigator.pushReplacementNamed(context, '/signIn');
-              }
-            }, child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: const [
-                Icon(Icons.logout),
-                Text("Log Out"),
-              ],
-            ),),
-            const SizedBox(height: 10,),
+            ElevatedButton(
+              onPressed: () {
+                NotificationServices().scheduleNotificationDemo();
+              },
+              child: const Text('Schedule Notification'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+                if (mounted) {
+                  Navigator.pushReplacementNamed(context, '/signIn');
+                }
+              },
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Icon(Icons.logout),
+                  Text("Log Out"),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
           ],
         ),
       ),

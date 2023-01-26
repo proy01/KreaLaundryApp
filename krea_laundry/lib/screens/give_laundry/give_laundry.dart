@@ -17,8 +17,19 @@ class _GiveLaundryState extends State<GiveLaundry> {
   List<TextInputFormatter> numberFormat = <TextInputFormatter>[
     FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
   ];
+  late final int clothesCheck;
 
   final KreaUser user = KreaUser.login();
+
+  @override
+  void initState() {
+    initializeClothes();
+    super.initState();
+  }
+
+  void initializeClothes() async{
+    clothesCheck = await user.checkClothes();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +41,7 @@ class _GiveLaundryState extends State<GiveLaundry> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const Padding(
-              padding: const EdgeInsets.all(24.0),
+              padding: EdgeInsets.all(24.0),
               child: Text(
                 "Please input the number of clothes you want to give:",
                 style: TextStyle(
@@ -63,6 +74,7 @@ class _GiveLaundryState extends State<GiveLaundry> {
                     // 0 is all ok,
                     // 1 is empty, 2 is greater than 20,
                     // 3 is less than 0, 4 is letter found
+                    // 5 is clothes exceeding 80 in a month.
                     if (val == null || val.isEmpty){
                       x = 1;
                     } else {
@@ -73,6 +85,8 @@ class _GiveLaundryState extends State<GiveLaundry> {
                             x = 2;
                           } else if (number < 0) {
                             x = 3;
+                          } else if (clothesCheck+number > 80){
+                            x = 5;
                           }
                         }
                       } catch (e) {
@@ -87,8 +101,9 @@ class _GiveLaundryState extends State<GiveLaundry> {
                       return "Value Can't be negative";
                     } else if (x == 4) {
                       return 'Put only numbers please';
+                    } else if (x == 5){
+                      return 'Maximum 80 clothes a month. You can give ${80-clothesCheck} more';
                     }
-                    // TODO: Make this into a switch case
                     return null;
                   },
                   decoration: const InputDecoration(
@@ -124,9 +139,7 @@ class _GiveLaundryState extends State<GiveLaundry> {
                       try {
                         if (x != 1) {
                           int number = int.parse(val);
-                          if (number > 20) {
-                            x = 2;
-                          } else if (number < 0) {
+                        if (number < 0) {
                             x = 3;
                           }
                         }
@@ -136,14 +149,11 @@ class _GiveLaundryState extends State<GiveLaundry> {
                     }
                     if (x == 1) {
                       return 'Value cannot be empty, put 0 instead';
-                    } else if (x == 2) {
-                      return 'For above 20 clothes, please approach laundry';
                     } else if (x == 3) {
                       return "Value Can't be negative";
                     } else if (x == 4) {
                       return 'Put only numbers please';
                     }
-                    // TODO: Make this into a switch case
                     return null;
                   },
                   decoration: const InputDecoration(
@@ -160,7 +170,7 @@ class _GiveLaundryState extends State<GiveLaundry> {
                     onPressed: () async {
                      if (_formKey.currentState!.validate()) {
                        await user.giveLaundry(
-                           clothes.text, undergarments.text);
+                           clothes.text, undergarments.text, (clothesCheck+int.parse(clothes.text)).toString());
                        if (mounted) {
                          Navigator.pop(context);
                        }
