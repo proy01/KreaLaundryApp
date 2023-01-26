@@ -10,9 +10,7 @@ Future<UserCredential> signInWithGoogleWeb() async {
   GoogleAuthProvider googleProvider = GoogleAuthProvider();
 
   googleProvider.addScope('https://www.googleapis.com/auth/contacts.readonly');
-  googleProvider.setCustomParameters({
-    'login_hint': 'user@example.com'
-  });
+  googleProvider.setCustomParameters({'login_hint': 'user@example.com'});
 
   // Once signed in, return the UserCredential
   return await FirebaseAuth.instance.signInWithPopup(googleProvider);
@@ -20,13 +18,14 @@ Future<UserCredential> signInWithGoogleWeb() async {
   // Or use signInWithRedirect
   // return await FirebaseAuth.instance.signInWithRedirect(googleProvider);
 }
+
 Future<UserCredential> signInWithGoogle() async {
   // Trigger the authentication flow
   final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
   // Obtain the auth details from the request
-  final GoogleSignInAuthentication? googleAuth = await googleUser
-      ?.authentication;
+  final GoogleSignInAuthentication? googleAuth =
+      await googleUser?.authentication;
 
   // Create a new credential
   final credential = GoogleAuthProvider.credential(
@@ -46,7 +45,6 @@ class MainAuth extends StatefulWidget {
 }
 
 class _MainAuthState extends State<MainAuth> {
-
   bool web = kIsWeb;
 
   @override
@@ -63,16 +61,18 @@ class _MainAuthState extends State<MainAuth> {
               width: 120,
               child: ElevatedButton(
                   onPressed: () async {
-                    web ? await signInWithGoogleWeb() : await signInWithGoogle();
+                    web
+                        ? await signInWithGoogleWeb()
+                        : await signInWithGoogle();
                     if (mounted) {
                       KreaUser user = KreaUser.login();
-                      if (user.isValidEmail()){
+                      if (user.isValidEmail()) {
                         user.isNewLogin();
                         Navigator.pushReplacementNamed(context, '/home');
                       } else {
-                        Navigator.pushReplacementNamed(context, '/signIn/InvalidEmail');
+                        Navigator.pushReplacementNamed(
+                            context, '/signIn/invalidUser');
                       }
-
                     }
                   },
                   child: Row(
