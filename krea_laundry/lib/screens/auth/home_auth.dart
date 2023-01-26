@@ -66,8 +66,13 @@ class _MainAuthState extends State<MainAuth> {
                     web ? await signInWithGoogleWeb() : await signInWithGoogle();
                     if (mounted) {
                       KreaUser user = KreaUser.login();
-                      user.isNewLogin();
-                      Navigator.pushReplacementNamed(context, '/home');
+                      if (user.isValidEmail()){
+                        user.isNewLogin();
+                        Navigator.pushReplacementNamed(context, '/home');
+                      } else {
+                        Navigator.pushReplacementNamed(context, '/signIn/InvalidEmail');
+                      }
+
                     }
                   },
                   child: Row(
