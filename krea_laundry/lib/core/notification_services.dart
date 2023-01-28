@@ -6,7 +6,7 @@ class NotificationServices {
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
   final AndroidInitializationSettings _androidInitializationSettings =
-      const AndroidInitializationSettings('img');
+      const AndroidInitializationSettings('app_icon');
 
   void initializeNotification() async {
     InitializationSettings initializationSettings = InitializationSettings(
@@ -58,7 +58,8 @@ class NotificationServices {
         0,
         'Laundry is Done!',
         'Your laundry is complete, please collect it before 5:00 PM today!',
-        tz.TZDateTime.now(tz.local).add(_calculateReceiveDemo(tz.TZDateTime.now(tz.local).weekday)),
+        tz.TZDateTime.now(tz.local)
+            .add(_calculateReceiveDemo(tz.TZDateTime.now(tz.local).weekday)),
         const NotificationDetails(
             android: AndroidNotificationDetails('0', 'Laundry Completion')),
         uiLocalNotificationDateInterpretation:
